@@ -2,7 +2,9 @@ import requests
 import logging
 from datetime import datetime
 from dataclasses import dataclass
-
+from email.mime.text import MIMEText
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 # Testing id
 LOCATION_IDS = {
@@ -51,8 +53,26 @@ def fetch_available_slots():
     except Exception:
         logging.critical("Error when calling cbp API")
 
+def send_email():
+    message = Mail(
+        # TODO: input email addresses
+        from_email='EMAIL',
+        to_emails='EMAIL',
+        subject='Sending with Twilio SendGrid is Fun',
+        html_content='<strong>and easy to do anywhere, even with Python</strong>')
+    try:
+        # TODO: input SendGrid API KEY
+        sg = SendGridAPIClient('API_KEY')
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
+
 def main():
-    fetch_available_slots()
+    # fetch_available_slots()
+    send_email()
 
 
 if __name__ == '__main__':
